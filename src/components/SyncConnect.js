@@ -6,16 +6,15 @@ function SyncConnect() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/vr/verify"); // Ensure the path is correct
-    }, 3000); // Adjust the duration as needed
+      navigate("/vr/verify");
+    }, 3000);
 
-    return () => clearTimeout(timer); // Cleanup the timer
+    return () => clearTimeout(timer);
   }, [navigate]);
 
   return (
     <div className="flex items-center justify-center h-full">
       <h1 className="text-font text-4xl">Sync Connect</h1>
-      {/* Add additional content or logic here */}
     </div>
   );
 }

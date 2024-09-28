@@ -5,7 +5,7 @@ function SyncStart() {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
-    navigate("/vr/connect"); // Update path to include /vr
+    navigate("/vr/connect");
   };
 
   return (

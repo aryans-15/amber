@@ -1,7 +1,7 @@
 // src/Home.js
-import { useEffect, useState } from 'react';
-import { auth } from '../firebase'; 
-import { useNavigate, Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { auth } from "../firebase";
+import { useNavigate, Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -13,7 +13,7 @@ function Home() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (!user) {
-        navigate('/unauthorized');
+        navigate("/unauthorized");
       } else {
         setUserName(user.displayName.split(' ')[0] || 'Guest');
         //fetchImageDescriptions(user.uid); 
@@ -23,7 +23,7 @@ function Home() {
     return () => unsubscribe();
   }, [navigate]);
 
-  // imageurls rn are for
+  // imageurls rn are temporary
   const fetchImageDescriptions = async (userId) => {
     const imageUrls = [
       'https://ambervr.vercel.app/static/media/vr.07afbc1ea5b99316b28c.png',
@@ -86,13 +86,25 @@ function Home() {
             <h1 className="text-5xl font-bold">Welcome, {userName}!</h1>
             <h2 className="text-2xl font-bold mt-2">Get started by:</h2>
             <ul className="mt-4 text-xl list-disc list-inside mb-6 text-secondary">
-              <li className="transition duration-300 hover:text-hoverc"><Link to="/vr">🥽 Syncing your VR headset</Link></li>
-              <li className="transition duration-300 hover:text-hoverc"><Link to="/settings">⚙️ Customizing your user settings</Link></li>
-              <li className="transition duration-300 hover:text-hoverc"><Link to="/about">💡 Learning about us and our goal</Link></li>
+              <li className="transition duration-300 hover:text-hoverc">
+                <Link to="/vr">🥽 Syncing your VR headset</Link>
+              </li>
+              <li className="transition duration-300 hover:text-hoverc">
+                <Link to="/settings">⚙️ Customizing your user settings</Link>
+              </li>
+              <li className="transition duration-300 hover:text-hoverc">
+                <Link to="/about">💡 Learning about us and our goal</Link>
+              </li>
             </ul>
             <p className="text-xl">
-              Confused? Get some{' '}
-              <Link to="/help" className="text-secondary transition duration-300 hover:text-hoverc">help</Link>!
+              Confused? Get some{" "}
+              <Link
+                to="/help"
+                className="text-secondary transition duration-300 hover:text-hoverc"
+              >
+                help
+              </Link>
+              !
             </p>
           </div>
         </div>
