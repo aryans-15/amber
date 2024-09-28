@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { auth, provider } from '../firebase'; 
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { auth } from '../firebase'; 
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from 'react-router-dom'; 
+import { handleLogin, handleLogout } from '../utils/authUtils';
 
 function Header() {
   const [hoveredIcon, setHoveredIcon] = useState(null);
@@ -16,21 +17,12 @@ function Header() {
     return () => unsubscribe(); 
   }, []);
 
-  const handleLogin = async () => {
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      console.error("Error during login:", error);
-    }
+  const handleUserLogin = async () => {
+    await handleLogin(navigate);
   };
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigate('/');
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
+  const handleUserLogout = async () => {
+    await handleLogout(navigate);
   };
 
   return (
@@ -39,7 +31,7 @@ function Header() {
         <Link to="/" className="text-font font-bold text-4xl mr-8 hover:text-secondary duration-300">amberVR</Link>
 
         <div className="flex items-center space-x-4">
-          <Link to="/vr" className="flex items-center transition-all duration-300 ease-in-out group hover:text-secondary"> {/* onMouseEnter={() => setHoveredIcon("vr")} onMouseLeave={() => setHoveredIcon(null)} */}
+          <Link to="/sync" className="flex items-center transition-all duration-300 ease-in-out group hover:text-secondary">
             <i className="bi bi-headset-vr text-4xl"></i>
             <span
               className={`transition-all duration-300 ease-in-out overflow-hidden ${
@@ -53,7 +45,7 @@ function Header() {
             </span>
           </Link>
 
-          <Link to="/settings" className="flex items-center transition-all duration-300 ease-in-out group hover:text-secondary"> {/* onMouseEnter={() => setHoveredIcon("settings")} onMouseLeave={() => setHoveredIcon(null)} */}
+          <Link to="/settings" className="flex items-center transition-all duration-300 ease-in-out group hover:text-secondary">
             <i className="bi bi-gear text-4xl"></i>
             <span
               className={`transition-all duration-300 ease-in-out overflow-hidden ${
@@ -70,7 +62,7 @@ function Header() {
       </div>
 
       <button
-        onClick={user ? handleLogout : handleLogin}
+        onClick={user ? handleUserLogout : handleUserLogin}
         className="text-font font-bold hover:bg-hoverc text-xl bg-secondary px-4 py-2 rounded-lg transition duration-300 ease-in-out"
       >
         {user ? "Log Out" : "Log In"}
