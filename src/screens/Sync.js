@@ -1,25 +1,27 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom"; // Import Routes and Route
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import SyncStart from "../components/SyncStart";
 import SyncConnect from "../components/SyncConnect";
 import SyncVerify from "../components/SyncVerify";
 
-function Sync() {
+// Export SyncStart as the default export
+const Sync = () => {
   return (
-    <Router>
-      <div className="flex flex-col h-screen bg-primary text-font">
-        <Header />
+    <div className="flex flex-col h-screen bg-primary text-font">
+      <Header />
+      <div className="flex-grow">
         <Routes>
-          <Route path="/" element={<SyncStart />} />
+          <Route path="/" element={<SyncStart />} /> {/* Default path */}
           <Route path="/connect" element={<SyncConnect />} />
           <Route path="/verify" element={<SyncVerify />} />
         </Routes>
-        <Footer />
       </div>
-    </Router>
+      <Footer />
+    </div>
   );
-}
+};
 
-export default Sync;
+// Set Sync as the default export
+export default SyncStart; // Now exporting SyncStart as default
