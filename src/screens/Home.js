@@ -21,11 +21,38 @@ function Home() {
     return () => unsubscribe();
   }, [navigate]);
 
+  {/*const fetchImageDescription = async () => {
+    const imageUrl = 'https://ambervr.vercel.app/static/media/vr.07afbc1ea5b99316b28c.png';
+    try {
+      const response = await fetch('https://amber-vr-api.onrender.com/describe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image_url: imageUrl }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log(data);
+      console.log('Image Description:', data.description);
+    } catch (error) {
+      console.error('Error fetching image description from the API:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchImageDescription();
+  }, []); */}
+
   return (
     <div className="flex flex-col h-screen bg-primary text-font">
       <Header />
       <div className="flex-grow flex items-center justify-center">
-        <div className="grid grid-cols-1 gap-4"> {/* might need to make cols-2 later */}
+        <div className="grid grid-cols-1 gap-4">
           <div className="p-8 rounded-lg flex flex-col justify-center">
             <h1 className="text-5xl font-bold">Welcome, {userName}!</h1>
             <h2 className="text-2xl font-bold mt-2">Get started by:</h2>

@@ -31,7 +31,7 @@ function Header() {
         <Link to="/" className="text-font font-bold text-4xl mr-8 hover:text-secondary duration-300">amberVR</Link>
 
         <div className="flex items-center space-x-4">
-          <Link to="/vr" className="flex items-center transition-all duration-300 ease-in-out group hover:text-secondary">
+          <Link to="/sync" className="flex items-center transition-all duration-300 ease-in-out group hover:text-secondary">
             <i className="bi bi-headset-vr text-4xl"></i>
             <span
               className={`transition-all duration-300 ease-in-out overflow-hidden ${
