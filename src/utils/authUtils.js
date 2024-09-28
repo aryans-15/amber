@@ -10,9 +10,10 @@ export const handleLogin = async (navigate) => {
     }
 };
 
-export const handleLogout = async () => {
+export const handleLogout = async (navigate) => {
     try {
         await signOut(auth);
+        navigate('/');
     } catch (error) {
         console.error("Error during logout:", error);
     }

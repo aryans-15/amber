@@ -22,8 +22,7 @@ function Header() {
   };
 
   const handleUserLogout = async () => {
-    await handleLogout();
-    navigate('/');
+    await handleLogout(navigate);
   };
 
   return (

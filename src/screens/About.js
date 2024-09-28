@@ -1,9 +1,15 @@
 import React from "react";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function About() {
   return (
-    <div className="flex-grow flex items-center justify-center">
-      <h1 className="text-5xl font-bold">About Screen</h1>
+    <div className="flex flex-col h-screen bg-primary text-font">
+      <Header />
+      <div className="flex-grow flex items-center justify-center">
+        About Screen
+      </div>
+      <Footer />
     </div>
   );
 }

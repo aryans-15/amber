@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <div className="fixed bottom-0 left-0 w-full flex justify-center p-4 items-center">
-      <div className="w-fit flex space-x-6 text-disabled">
-        <a href="#" className="text-xl hover:underline duration-300">
+    <div className="fixed bottom-0 left-0 w-full flex justify-between p-4 items-center text-disabled">
+      <div className="flex space-x-6">
+        <Link to="/about" className="text-xl hover:underline duration-300">
           About
-        </a>
-        <a href="#" className="text-xl hover:underline duration-300">
+        </Link>
+        <Link to="/help" className="text-xl hover:underline duration-300">
           Help
-        </a>
-        <a href="#" className="text-xl hover:underline duration-300">
+        </Link>
+        <a href="https://hackumbc.tech" target="_blank" className="text-xl hover:underline duration-300">
           built for HackUMBC
         </a>
       </div>
+
+      <p className="text-xl">
+        © 2024 AmberVR. All rights reserved.
+      </p>
     </div>
   );
 }

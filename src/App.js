@@ -6,8 +6,8 @@ import Sync from "./screens/Sync";
 import Settings from "./screens/Settings";
 import About from "./screens/About";
 import Help from "./screens/Help";
-import Unauthorized from "./screens/Unauthorized";
-import NotFound from "./screens/NotFound";
+import Unauthorized from "./screens/errors/Unauthorized";
+import NotFound from "./screens/errors/NotFound";
 
 function App() {
   return (
