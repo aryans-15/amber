@@ -9,6 +9,7 @@ module.exports = {
         primary: '#001c1c',
         font: '#e0ffff',
         secondary: '#7f7fff',
+        hoverc: '#4343f6',
         accent: '#ff5c00',
         disabled: '#a9a9a9',
       },
@@ -16,7 +17,7 @@ module.exports = {
         sans: ['Inter', 'sans-serif'],
       },
       fontWeight: {
-        light: 200,
+        light: 200, 
       },
     },
   },
