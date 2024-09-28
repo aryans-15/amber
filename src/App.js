@@ -1,8 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import Splash from "./screens/Splash";
 import Home from "./screens/Home";
 import Sync from "./screens/Sync";
 import Settings from "./screens/Settings";
+import About from "./screens/About";
+import Help from "./screens/Help";
+import Unauthorized from "./screens/Unauthorized";
+import NotFound from "./screens/NotFound";
 
 function App() {
   return (
@@ -10,9 +15,14 @@ function App() {
       <div className="h-screen flex bg-primary text-font">
         <div className="flex-grow">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/vr" element={<Sync />} />
+            <Route path="/" element={<Splash />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/sync" element={<Sync />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="*" element={<NotFound />} /> 
           </Routes>
         </div>
       </div>
