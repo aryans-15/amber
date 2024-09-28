@@ -1,9 +1,12 @@
+import "bootstrap-icons/font/bootstrap-icons.css";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
 function App() {
   return (
-    <div className="h-screen flex items-center justify-center bg-primary text-font">
-      <h1 className="text-4xl font-bold text-secondary">
-        amberVR
-      </h1>
+    <div className="h-screen flex bg-primary text-font">
+      <Header></Header>
+      <Footer></Footer>
     </div>
   );
 }
