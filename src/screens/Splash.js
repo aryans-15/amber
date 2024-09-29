@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import vrImage from "../assets/test.jpg";
+import vrImage from "../assets/vr.png";
 import { handleLogin } from '../utils/authUtils';
 
 function Home() {

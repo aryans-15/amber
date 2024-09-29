@@ -21,7 +21,7 @@ function Home() {
   }, [navigate]);
 
   const uploadAndDescribeImage = async () => {
-    const imageUrl = 'https://ambervr.vercel.app/static/media/vr.07afbc1ea5b99316b28c.png'; 
+    const imageUrl = 'https://ambervr.vercel.app/static/media/test.7ead5d4745684ce12c76.jpg'; 
   
     try {
       const response = await fetch(imageUrl); 
@@ -50,7 +50,7 @@ function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ image_url: 'https://ambervr.vercel.app/static/media/vr.07afbc1ea5b99316b28c.png' }),
+        body: JSON.stringify({ image_url: 'https://ambervr.vercel.app/static/media/test.7ead5d4745684ce12c76.jpg' }),
       });
 
       if (!describeResponse.ok) {
