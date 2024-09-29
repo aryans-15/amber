@@ -72,12 +72,18 @@ function Settings() {
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
               >
-                <option value="english">English</option>
-                <option value="spanish">Spanish</option>
-                <option value="chinese">Chinese</option>
-                <option value="french">French</option>
-                <option value="korean">Korean</option>
-                <option value="japanese">Japanese</option>
+                <option value="en-US">English</option>
+                <option value="es-AR">Spanish</option>
+                <option value="zh-CN">Chinese</option>
+                <option value="fr-FR">French</option>
+                <option value="ko-KR">Korean</option>
+                <option value="ja-JP">Japanese</option>
+                <option value="pt-BR">Portuguese</option>
+                <option value="hi-IN">Hindi</option>
+                <option value="ta-IN">Tamil</option>
+                <option value="te-IN">Telugu</option>
+                <option value="ar-IQ">Arabic</option>
+                <option value="de-DE">German</option>
               </select>
             </div>
             <div className="flex space-x-4 items-center justify-between">
