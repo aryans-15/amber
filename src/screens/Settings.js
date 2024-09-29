@@ -118,10 +118,10 @@ function Settings() {
                 value={voice}
                 onChange={(e) => setVoice(e.target.value)}
               >
-                <option value="adam">Adam</option>
-                <option value="alice">Alice</option>
-                <option value="chris">Chris</option>
-                <option value="daniel">Daniel</option>
+                <option value="pMsXgVXv3BLzUgSXRplE">Adam</option>
+                <option value="qNkXV9mPrLwZpMR5TyXM">Alice</option>
+                <option value="aTk3VjRbT6MwZw2TyYXM">Chris</option>
+                <option value="xMkW7F4nQLwMpBR5CyYM">Daniel</option>
               </select>
             </div>
           </div>
