@@ -23,8 +23,8 @@ function Home() {
         if (!userDoc.exists()) {
           const defaultSettings = {
             language: "en-US",
-            speed: "normal",
-            voice: "adam",
+            speed: "1",
+            voice: "N2lVS1w4EtoT3dr4eOWO",
           };
           await setDoc(userDocRef, defaultSettings);
           console.log("Default settings initialized for the user.");
