@@ -29,7 +29,7 @@ def describe_image():
     payload = {
         "model": "gpt-4o-mini",
         "messages": [
-            {"role": "system", "content": "You are a cool image analyst. Your goal is to describe what is in this image."},
+            {"role": "system", "content": "You are a cool image analyst. Your goal is to describe what is in this image. Limit responses to 1 sentence, 2 if absolutely necessary. "},
             {
                 "role": "user",
                 "content": [

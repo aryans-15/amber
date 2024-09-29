@@ -20,6 +20,55 @@ function Home() {
     return () => unsubscribe();
   }, [navigate]);
 
+  const uploadAndDescribeImage = async () => {
+    const imageUrl = 'https://ambervr.vercel.app/static/media/vr.07afbc1ea5b99316b28c.png'; 
+  
+    try {
+      const response = await fetch(imageUrl); 
+      if (!response.ok) {
+        throw new Error('Failed to fetch image from URL');
+      }
+      const blob = await response.blob();
+      const formData = new FormData();
+      formData.append('file', blob, 'vr.png');
+  
+      const uploadResponse = await fetch('/upload', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!uploadResponse.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const uploadResult = await uploadResponse.json();
+      const filePathString = String(uploadResult.file_path);
+      console.log('Image uploaded successfully:', filePathString);
+
+      const describeResponse = await fetch('/describe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image_url: 'https://ambervr.vercel.app/static/media/vr.07afbc1ea5b99316b28c.png' }),
+      });
+
+      if (!describeResponse.ok) {
+        throw new Error('Failed to get image description');
+      }
+
+      const describeResult = await describeResponse.json();
+      console.log('Image description:', describeResult);
+  
+    } catch (error) {
+      console.error('Error in upload and describe process:', error);
+    }
+  };
+
+  useEffect(() => {
+    uploadAndDescribeImage();
+  }, []);
+
   return (
     <div className="flex flex-col h-screen bg-primary text-font">
       <Header />
