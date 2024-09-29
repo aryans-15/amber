@@ -25,11 +25,12 @@ def describe_image():
     image_url = data.get('image_url')
     if not image_url:
         return jsonify({'error': 'No image URL provided'}), 400
+    prompt = data.get('prompt', '')
 
     payload = {
         "model": "gpt-4o-mini",
         "messages": [
-            {"role": "system", "content": "You are a cool image analyst. Your goal is to describe what is in this image. Limit responses to 1 sentence, 2 if absolutely necessary. "},
+            {"role": "system", "content": "You are a cool image analyst. Your goal is to describe what is in this image. The user is asking you: ' + prompt + ' Limit responses to 1 sentence. "},
             {
                 "role": "user",
                 "content": [

@@ -14,7 +14,7 @@ function Sync() {
     <div className="flex flex-col h-screen bg-primary text-font">
       <Header />
       <div className="flex-grow flex items-center justify-center">
-        <div className="w-[50%] h-[70%] border-4 border-secondary flex flex-col p-8 items-center">
+        <div className="w-[60%] h-[70%] flex flex-col p-8 items-center">
           {steps[currentStep]}
           {currentStep < steps.length - 1 && (
             <button
