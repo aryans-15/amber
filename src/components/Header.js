@@ -26,7 +26,7 @@ function Header() {
 
   const handleSyncClick = () => {
     if (user) {
-      navigate("/sync");
+      navigate("/chat");
     } else {
       navigate("/unauthorized");
     }
