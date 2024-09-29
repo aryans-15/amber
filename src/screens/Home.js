@@ -1,18 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import { ElevenLabsClient, ElevenLabs } from "elevenlabs";
 
 function Log() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
   const [logs, setLogs] = useState([]);
-  const elevenLabsClient = new ElevenLabsClient({ apiKey: 'YOUR_ELEVEN_LABS_API_KEY' }); // Set up client
+  const elevenLabsClient = new ElevenLabsClient({
+    apiKey: process.env.REACT_APP_ELEVENLABS_API_KEY,
+  }); // Set up client
   const audioRef = useRef(null); // Ref to hold the audio element
 
   const streamCamVideo = () => {
     const constraints = { video: true };
-    navigator.mediaDevices.getUserMedia(constraints)
+    navigator.mediaDevices
+      .getUserMedia(constraints)
       .then((mediaStream) => {
         const video = videoRef.current;
         video.srcObject = mediaStream;
@@ -21,31 +24,34 @@ function Log() {
         };
       })
       .catch((err) => {
-        console.log(err.name + ': ' + err.message);
+        console.log(err.name + ": " + err.message);
       });
   };
 
   const captureFrame = async () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const imageBase64 = canvas.toDataURL('image/png').split(',')[1];
+    const imageBase64 = canvas.toDataURL("image/png").split(",")[1];
 
-    const userId = "guest"; 
+    const userId = "guest";
     try {
-      const response = await axios.post('https://amber-vr-api.onrender.com/describe', {
-        user_id: userId,
-        image_base64: imageBase64
-      });
-      
+      const response = await axios.post(
+        "https://amber-vr-api.onrender.com/describe",
+        {
+          user_id: userId,
+          image_base64: imageBase64,
+        }
+      );
+
       const newDescription = response.data.description;
       setDescription(newDescription);
       const timestamp = new Date().toISOString();
       setLogs((prevLogs) => [...prevLogs, [newDescription, timestamp]]);
       playDescription(newDescription);
     } catch (error) {
-      console.error('Error sending image to API:', error);
+      console.error("Error sending image to API:", error);
     }
   };
 
@@ -53,31 +59,30 @@ function Log() {
     try {
       const audioStream = await elevenLabsClient.textToSpeech({
         text: text,
-        voice: "Rachel" // You can choose a different voice here
+        voice: "Rachel", // You can choose a different voice here
       });
-      
+
       const audioUrl = URL.createObjectURL(audioStream);
       audioRef.current.src = audioUrl;
       audioRef.current.play();
-
     } catch (error) {
-      console.error('Error converting text to speech:', error);
+      console.error("Error converting text to speech:", error);
     }
   };
 
   useEffect(() => {
     streamCamVideo();
-    
+
     const intervalId = setInterval(() => {
       captureFrame();
-    }, 4000); 
+    }, 4000);
 
     return () => clearInterval(intervalId);
   }, []);
 
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString(); 
+    return date.toLocaleTimeString();
   };
 
   return (
@@ -85,24 +90,38 @@ function Log() {
       <p className="text-font text-6xl mb-6 font-bold">Vision Log</p>
 
       <div className="grid grid-cols-2 gap-2">
-        <div className="flex flex-col items-center justify-center max-h-[40vh] overflow-hidden mr-4"> 
-          <video autoPlay={true} ref={videoRef} className="rounded-lg shadow-lg max-h-full w-full object-cover"></video> 
-          <canvas ref={canvasRef} style={{ display: 'none' }} width={1280} height={720}></canvas>
+        <div className="flex flex-col items-center justify-center max-h-[40vh] overflow-hidden mr-4">
+          <video
+            autoPlay={true}
+            ref={videoRef}
+            className="rounded-lg shadow-lg max-h-full w-full object-cover"
+          ></video>
+          <canvas
+            ref={canvasRef}
+            style={{ display: "none" }}
+            width={1280}
+            height={720}
+          ></canvas>
         </div>
-        <div className="rounded-lg flex flex-col justify-center max-h-[40vh] max-w-[60vh] overflow-y-auto ml-4"> 
+        <div className="rounded-lg flex flex-col justify-center max-h-[40vh] max-w-[60vh] overflow-y-auto ml-4">
           {logs.map(([log, timestamp], index) => (
-            <div key={index} className="flex items-start px-2 py-2 bg-secondary rounded-lg shadow-md mb-2"> 
+            <div
+              key={index}
+              className="flex items-start px-2 py-2 bg-secondary rounded-lg shadow-md mb-2"
+            >
               <i className="bi bi-info-circle text-2xl mr-2"></i>
               <div className="flex flex-col">
                 <span className="text-xl">
-                  {log} <span className="text-xl text-primary font-bold mt-1">({formatTimestamp(timestamp)})</span>
+                  {log}{" "}
+                  <span className="text-xl text-primary font-bold mt-1">
+                    ({formatTimestamp(timestamp)})
+                  </span>
                 </span>
               </div>
             </div>
           ))}
         </div>
       </div>
-      
     </div>
   );
 }
