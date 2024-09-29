@@ -75,7 +75,10 @@ function FAQ() {
                 </h3>
                 <p class="text-disabled">
                   Our website provides a step by step guide to pair your device{" "}
-                  <a href="/sync" className="text-font underline">
+                  <a
+                    href="/sync"
+                    className="text-secondary transition duration-300 hover:text-hoverc"
+                  >
                     here.
                   </a>
                 </p>
@@ -123,7 +126,8 @@ function FAQ() {
                 </h3>
                 <p class="text-disabled">
                   We have different detection modes (low, medium high) that
-                  corresponds with the
+                  corresponds with the specificity of the object detection
+                  depending on how quick and specific the response is.
                 </p>
               </div>
               <div class="mb-10">
