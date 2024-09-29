@@ -29,7 +29,7 @@ function Log() {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     const imageBase64 = canvas.toDataURL('image/png').split(',')[1];
 
-    const userId = "example_user_id"; // Replace with actual user ID as needed
+    const userId = "guest"; 
     try {
       const response = await axios.post('https://amber-vr-api.onrender.com/describe', {
         user_id: userId,
@@ -38,8 +38,6 @@ function Log() {
       
       const newDescription = response.data.description;
       setDescription(newDescription);
-
-      // Add the new description to the logs
       const timestamp = new Date().toISOString();
       setLogs((prevLogs) => [...prevLogs, [newDescription, timestamp]]);
       
@@ -60,7 +58,7 @@ function Log() {
 
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString(); // Format as needed
+    return date.toLocaleTimeString(); 
   };
 
   return (
