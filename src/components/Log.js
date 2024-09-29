@@ -5,6 +5,7 @@ import { getAuth } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate, Link } from "react-router-dom";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 function Log() {
   const videoRef = useRef(null);
@@ -25,6 +26,9 @@ function Log() {
   const audioRef = useRef(null);
   const [transcript, setTranscript] = useState("");
   const navigate = useNavigate();
+  let userVoice = "N2lVS1w4EtoT3dr4eOWO";
+  let userLanguage = "en-US";
+  let userSpeed = 1;
 
   const streamCamVideo = () => {
     const constraints = { video: { facingMode: "user" } };
@@ -128,7 +132,9 @@ function Log() {
       const userDoc = await getDoc(userDocRef);
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        const userLanguage = userData.language;
+        userLanguage = userData.language;
+        userSpeed = userData.speed;
+        userVoice = userData.voice;
         recognition.lang = userLanguage;
       } else {
         console.error("No user document found");
@@ -241,7 +247,7 @@ function Log() {
     try {
       const response = await axios({
         method: "post",
-        url: "https://api.elevenlabs.io/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE",
+        url: "https://api.elevenlabs.io/v1/text-to-speech/" + userVoice,
         headers: {
           "xi-api-key": process.env.REACT_APP_ELEVENLABS_API_KEY,
           "Content-Type": "application/json",
@@ -249,10 +255,13 @@ function Log() {
         responseType: "arraybuffer",
         data: {
           text: text,
+          voice: userVoice,
+          language: userLanguage,
           voice_settings: {
             stability: 0.1,
             similarity_boost: 0.3,
             style: 0.2,
+            speed: userSpeed,
           },
         },
       });
@@ -296,7 +305,7 @@ function Log() {
 
   return (
     <div className="flex flex-col items-center justify-center h-full overflow-auto px-4">
-      <p className="text-font text-6xl mb-12 font-bold">Vision Log</p>
+      <p className="text-font text-6xl mb-12 font-bold">Talk to Amber</p>
 
       <div className="grid grid-cols-2 gap-2">
         <div className="flex flex-col items-center justify-center  overflow-hidden mr-4">

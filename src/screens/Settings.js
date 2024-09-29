@@ -106,9 +106,9 @@ function Settings() {
                 value={speed}
                 onChange={(e) => setSpeed(e.target.value)}
               >
-                <option value="slow">Slow</option>
-                <option value="normal">Normal</option>
-                <option value="fast">Fast</option>
+                <option value="1">Slow</option>
+                <option value="5">Normal</option>
+                <option value="10">Fast</option>
               </select>
             </div>
             <div className="flex space-x-4 items-center justify-between">
@@ -118,10 +118,10 @@ function Settings() {
                 value={voice}
                 onChange={(e) => setVoice(e.target.value)}
               >
-                <option value="pMsXgVXv3BLzUgSXRplE">Adam</option>
-                <option value="qNkXV9mPrLwZpMR5TyXM">Alice</option>
-                <option value="aTk3VjRbT6MwZw2TyYXM">Chris</option>
-                <option value="xMkW7F4nQLwMpBR5CyYM">Daniel</option>
+                <option value="N2lVS1w4EtoT3dr4eOWO">Callum</option>
+                <option value="pqHfZKP75CvOlQylNhV4">Bill</option>
+                <option value="XB0fDUnXU5powFXDhCwa">Charlotte</option>
+                <option value="ErXwobaYiN019PkySvjV">Antoni</option>
               </select>
             </div>
           </div>
