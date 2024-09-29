@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ElevenLabsClient } from "elevenlabs";
 import axios from 'axios';
+import { getAuth } from "firebase/auth";
+import { auth } from "../firebase";
+import { useNavigate, Link } from "react-router-dom";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 function Log() {
   const videoRef = useRef(null);
@@ -18,6 +22,7 @@ function Log() {
   const elevenLabsClient = new ElevenLabsClient({ apiKey: process.env.REACT_APP_ELEVENLABS_API_KEY });
   const audioRef = useRef(null);
   const [transcript, setTranscript] = useState(''); 
+  const navigate = useNavigate();
 
   const streamCamVideo = () => {
     const constraints = { video: true };
@@ -96,15 +101,35 @@ function Log() {
     if (recognitionRef.current) {
       recognitionRef.current.stop();
     }
-
   };
 
-  const startSpeechRecognition = () => {
+  const startSpeechRecognition = async () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.continuous = false;
     recognition.interimResults = false;
-    recognition.lang = 'en-US';
+
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
+    if (user) {
+        const email = user.email;
+        const db = getFirestore();
+        const userDocRef = doc(db, "users", email);
+        
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const userLanguage = userData.language;
+            recognition.lang = userLanguage;
+        } else {
+            console.error("No user document found");
+            recognition.lang = 'en-US';
+        }
+    } else {
+        console.error("No user is signed in");
+        recognition.lang = 'en-US';
+    }
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
@@ -112,7 +137,7 @@ function Log() {
       setTranscript(transcript);
       captureFrame(transcript);
       const timestamp = new Date().toISOString();
-      setLogs((prevLogs) => [...prevLogs, [transcript, timestamp]]);
+      setLogs((prevLogs) => [...prevLogs, [transcript, `${timestamp} · Human`]]);
     };
 
     recognition.onerror = (event) => {
@@ -188,7 +213,7 @@ function Log() {
       const newDescription = response.data.description;
       setDescription(newDescription);
       const timestamp = new Date().toISOString();
-      setLogs((prevLogs) => [...prevLogs, [newDescription, timestamp]]);
+      setLogs((prevLogs) => [...prevLogs, [newDescription, `${timestamp} · AI Agent`]]); 
       playDescription(newDescription);
     } catch (error) {
       console.error('Error sending image to API:', error);
@@ -226,8 +251,15 @@ function Log() {
   };
 
   useEffect(() => {
-    streamCamVideo();
-  }, []);
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        navigate("/unauthorized");
+      } else {
+        streamCamVideo();
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
   
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -240,20 +272,22 @@ function Log() {
   }, [isRecording]);
 
   const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString(); 
+    let secondPart = timestamp.split(' · ')[1];
+    let firstPart = timestamp.split(' · ')[0];
+    const date = new Date(firstPart);
+    return date.toLocaleTimeString() + ' · ' + secondPart; 
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full overflow-auto">
+    <div className="flex flex-col items-center justify-center h-full overflow-auto px-4">
       <p className="text-font text-6xl mb-12 font-bold">Vision Log</p>
 
       <div className="grid grid-cols-2 gap-2">
-        <div className="flex flex-col items-center justify-center max-h-[35vh] overflow-hidden mr-4"> 
+        <div className="flex flex-col items-center justify-center  overflow-hidden mr-4"> 
           <video autoPlay={true} ref={videoRef} className="rounded-lg shadow-lg max-h-full w-full object-cover"></video> 
           <canvas ref={canvasRef} style={{ display: 'none' }} width={1280} height={720}></canvas>
         </div>
-        <div className="rounded-lg flex flex-col justify-center max-h-[40vh] max-w-[60vh] overflow-y-auto ml-4 border-4 border-secondary px-4"> 
+        <div className="rounded-lg flex flex-col justify-center overflow-y-auto ml-4 border-4 border-secondary px-4"> 
           {logs.map(([text, timestamp], index) => (
             <div key={index} className="text-xl my-2 flex flex-col">
               <p className="text-xl">{text}</p>
@@ -262,16 +296,7 @@ function Log() {
           ))}
         </div>
       </div>
-
-      <div className="w-full mt-6">
-        {description && (
-          <div className="text-center border-2 border-gray-200 p-4 rounded-lg shadow-lg">
-            <p className="text-xl">{description}</p>
-          </div>
-        )}
-      </div>
-
-      <canvas ref={visualizerCanvasRef} width={640} height={256} className="mt-4"></canvas>
+      <canvas ref={visualizerCanvasRef} width={640} height={256} className="mb-8"></canvas>
     </div>
   );
 }
