@@ -5,7 +5,7 @@ import SyncStart from "../components/SyncStart";
 import SyncConnect from "../components/SyncConnect";
 import Log from "../components/Log";
 
-const Sync = () => {
+function Sync() {
   const [currentStep, setCurrentStep] = useState(0);
   // const steps = [<SyncStart onNext={() => setCurrentStep(1)} />, <SyncConnect onNext={() => setCurrentStep(2)} />, <Log />];
   const steps = [<Log />];
@@ -39,4 +39,4 @@ const Sync = () => {
   );
 };
 
-export default SyncStart;
+export default Sync;
