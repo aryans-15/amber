@@ -45,7 +45,7 @@ function Home() {
             <h2 className="text-2xl font-bold mt-2">Get started by:</h2>
             <ul className="mt-4 text-xl list-disc list-inside mb-6 text-secondary">
               <li className="transition duration-300 hover:text-hoverc">
-                <Link to="/sync">🥽 Talking with</Link>
+                <Link to="/sync">🥽 Talking with Amber</Link>
               </li>
               <li className="transition duration-300 hover:text-hoverc">
                 <Link to="/settings">⚙️ Customizing your user settings</Link>
