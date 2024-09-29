@@ -1,147 +1,126 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function Settings() {
-  const [activeTab, setActiveTab] = useState("camera");
-  const [volume, setVolume] = useState(50);
+  const [language, setLanguage] = useState("english");
+  const [speed, setSpeed] = useState("normal");
+  const [voice, setVoice] = useState("adam");
+  const [userEmail, setUserEmail] = useState(null);
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case "camera":
-        return (
-          <div className="h-full w-full flex flex-col p-2">
-            <div className="flex space-x-4 items-center justify-around mb-auto">
-              <p className="text-disabled text-2xl whitespace-nowrap">
-                Render Distance:
-              </p>
-              <select className="bg-disabled text-font text-xl border-4 border-font rounded-lg block w-full py-2 px-3">
-                <option value="low">Low (1m)</option>
-                <option value="medium">Medium (5m)</option>
-                <option value="high">High (10m)</option>
-              </select>
-            </div>
-            <div className="flex justify-end space-x-4 mt-auto">
-              <button className="bg-accent hover:bg-hovera px-4 py-2 rounded-lg text-xl duration-300">
-                Cancel
-              </button>
-              <button className="bg-accent hover:bg-hovera px-4 py-2 rounded-lg text-xl duration-300">
-                Save
-              </button>
-            </div>
-          </div>
-        );
-      case "output":
-        return (
-          <div className="h-full w-full flex flex-col p-2 text-disabled">
-            <div className="flex flex-col space-y-2">
-              <label className="text-2xl" htmlFor="volume">
-                Volume: {volume}%
-              </label>
-              <input
-                id="volume"
-                type="range"
-                min="0"
-                max="100"
-                value={volume}
-                onChange={(e) => setVolume(e.target.value)}
-                className="w-full h-4 bg-disabled text-font rounded-lg appearance-none cursor-pointer"
-              />
-            </div>
+  const auth = getAuth();
 
-            <div className="flex space-x-4 items-center justify-between mt-8">
-              <p className="text-disabled text-2xl">Voice: </p>
-              <select className="bg-disabled text-font border-4 border-font text-xl rounded-lg block w-full py-2 px-3">
-                <option value="voice1">voice1</option>
-                <option value="voice2">voice2</option>
-                <option value="voice3">voice3</option>
-              </select>
-            </div>
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUserEmail(user.email);
 
-            <div className="flex justify-end space-x-4 mt-auto">
-              <button className="bg-accent hover:bg-hovera px-4 py-2 rounded-lg text-xl text-font duration-300">
-                Cancel
-              </button>
-              <button className="bg-accent hover:bg-hovera px-4 py-2 rounded-lg text-xl text-font duration-300">
-                Save
-              </button>
-            </div>
-          </div>
-        );
+        const userDocRef = doc(db, "users", user.email);
+        const userDoc = await getDoc(userDocRef);
 
-      default:
-        return (
-          <div className="h-full w-full flex flex-col p-2">
-            <div className="flex space-x-4 items-center justify-around mb-auto">
-              <p className="text-disabled text-2xl whitespace-nowrap">
-                Detection Level:
-              </p>
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          if (userData.language) {
+            setLanguage(userData.language);
+          }
+          if (userData.speed) {
+            setSpeed(userData.speed);
+          }
+          if (userData.voice) {
+            setVoice(userData.voice);
+          }
+        } else {
+          console.log("No user settings found. Using default settings.");
+        }
+      }
+    });
 
-              <select className="bg-disabled text-font border-4 border-font text-xl rounded-lg block w-full py-2 px-3">
-                <option value="low">Low (walls)</option>
-                <option value="medium">Medium (walls, chairs, polls)</option>
-                <option value="high">
-                  High (walls, chairs, polls, people)
-                </option>
-              </select>
-            </div>
-            <div className="flex justify-end space-x-4 mt-auto">
-              <button className="bg-accent hover:bg-hovera px-4 py-2 rounded-lg text-xl text-font duration-300">
-                Cancel
-              </button>
-              <button className="bg-accent hover:bg-hovera px-4 py-2 rounded-lg text-xl text-font duration-300">
-                Save
-              </button>
-            </div>
-          </div>
-        );
+    return () => unsubscribe();
+  }, [auth]);
+
+  const handleSave = async () => {
+    if (!userEmail) {
+      console.log("User not authenticated");
+      return;
+    }
+
+    const userDocRef = doc(db, "users", userEmail);
+
+    try {
+      const updatedData = { language, speed, voice };
+      await setDoc(userDocRef, updatedData, { merge: true });
+      console.log("Settings updated successfully!");
+    } catch (error) {
+      console.error("Error updating document: ", error);
+      console.log("Failed to update settings");
     }
   };
 
   return (
     <div className="flex flex-col h-screen bg-primary text-font">
       <Header />
-      <div className="flex flex-grow items-center justify-center">
-        <div className="flex w-3/4 max-w-4xl h-[50%] border-4 border-font shadow-lg shadow-font rounded-lg">
-          <div className="w-1/3 p-4 rounded-l-lg border-r-4 border-font text-disabled">
-            <ul className="space-y-4 text-2xl">
-              <li
-                className={`cursor-pointer ${
-                  activeTab === "camera"
-                    ? "font-bold border-b-2 border-font"
-                    : ""
-                }`}
-                onClick={() => setActiveTab("camera")}
+      <div className="h-full w-full flex flex-grow items-center justify-center">
+        <div className="flex flex-col p-8 text-disabled w-[40%] h-[50%] border-4 border-font shadow-lg shadow-font rounded-lg">
+          <div className="flex flex-col space-y-4">
+            <div className="flex space-x-4 items-center justify-between">
+              <p className="text-disabled text-2xl">Language: </p>
+              <select
+                className="bg-disabled text-font border-4 border-font text-xl rounded-lg block w-[80%] py-2 px-3"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
               >
-                Camera Settings
-              </li>
-              <li
-                className={`cursor-pointer ${
-                  activeTab === "output"
-                    ? "font-bold border-b-2 border-font"
-                    : ""
-                }`}
-                onClick={() => setActiveTab("output")}
+                <option value="english">English</option>
+                <option value="spanish">Spanish</option>
+                <option value="chinese">Chinese</option>
+                <option value="french">French</option>
+                <option value="korean">Korean</option>
+                <option value="japanese">Japanese</option>
+              </select>
+            </div>
+            <div className="flex space-x-4 items-center justify-between">
+              <p className="text-disabled text-2xl">Speed: </p>
+              <select
+                className="bg-disabled text-font border-4 border-font text-xl rounded-lg block w-[80%] py-2 px-3"
+                value={speed}
+                onChange={(e) => setSpeed(e.target.value)}
               >
-                Output Settings
-              </li>
-              <li
-                className={`cursor-pointer ${
-                  activeTab === "detection"
-                    ? "font-bold border-b-2 border-font"
-                    : ""
-                }`}
-                onClick={() => setActiveTab("detection")}
+                <option value="slow">Slow</option>
+                <option value="normal">Normal</option>
+                <option value="fast">Fast</option>
+              </select>
+            </div>
+            <div className="flex space-x-4 items-center justify-between">
+              <p className="text-disabled text-2xl">Voice: </p>
+              <select
+                className="bg-disabled text-font border-4 border-font text-xl rounded-lg block w-[80%] py-2 px-3"
+                value={voice}
+                onChange={(e) => setVoice(e.target.value)}
               >
-                Detection Settings
-              </li>
-            </ul>
+                <option value="adam">Adam</option>
+                <option value="alice">Alice</option>
+                <option value="chris">Chris</option>
+                <option value="daniel">Daniel</option>
+              </select>
+            </div>
           </div>
 
-          <div className="flex-grow p-4">{renderContent()}</div>
+          <div className="flex justify-end space-x-4 mt-auto">
+            <button className="bg-accent hover:bg-hovera px-4 py-2 rounded-lg text-xl text-font duration-300">
+              Cancel
+            </button>
+            <button
+              className="bg-accent hover:bg-hovera px-4 py-2 rounded-lg text-xl text-font duration-300"
+              onClick={handleSave}
+            >
+              Save
+            </button>
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 }
