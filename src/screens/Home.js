@@ -5,7 +5,7 @@ function Log() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [description, setDescription] = useState('');
-  const [logs, setLogs] = useState([]); // State for logs
+  const [logs, setLogs] = useState([]);
 
   const streamCamVideo = () => {
     const constraints = { video: true };
