@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 function Home() {
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,7 +13,7 @@ function Home() {
       if (!user) {
         navigate("/unauthorized");
       } else {
-        setUserName(user.displayName.split(' ')[0] || 'Guest');
+        setUserName(user.displayName.split(" ")[0] || "Guest");
       }
     });
 
@@ -89,12 +89,12 @@ function Home() {
               </li>
             </ul>
             <p className="text-xl">
-              Confused? Get some{" "}
+              Have questions? Check our{" "}
               <Link
                 to="/help"
                 className="text-secondary transition duration-300 hover:text-hoverc"
               >
-                help
+                FAQ
               </Link>
               !
             </p>

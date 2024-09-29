@@ -28,7 +28,11 @@ function Sync() {
             {steps.map((_, index) => (
               <div
                 key={index}
-                className={`w-4 h-4 rounded-full ${currentStep === index ? 'bg-secondary' : 'border-2 border-secondary'}`}
+                className={`w-4 h-4 rounded-full ${
+                  currentStep === index
+                    ? "bg-secondary"
+                    : "border-2 border-secondary"
+                }`}
               ></div>
             ))}
           </div>
@@ -37,6 +41,6 @@ function Sync() {
       <Footer />
     </div>
   );
-};
+}
 
 export default Sync;

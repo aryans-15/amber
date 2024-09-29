@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { auth } from '../firebase'; 
-import { signOut, onAuthStateChanged } from "firebase/auth";
-import { Link, useNavigate } from 'react-router-dom'; 
-import { handleLogin, handleLogout } from '../utils/authUtils';
+import { auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { handleLogin, handleLogout } from "../utils/authUtils";
 
 function Header() {
-  const [hoveredIcon, setHoveredIcon] = useState(null);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -14,8 +13,8 @@ function Header() {
       setUser(user);
     });
 
-    return () => unsubscribe(); 
-  }, []);
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handleUserLogin = async () => {
     await handleLogin(navigate);
@@ -25,39 +24,46 @@ function Header() {
     await handleLogout(navigate);
   };
 
+  const handleSyncClick = () => {
+    if (user) {
+      navigate("/sync");
+    } else {
+      navigate("/unauthorized");
+    }
+  };
+
+  const handleSettingsClick = () => {
+    if (user) {
+      navigate("/settings");
+    } else {
+      navigate("/unauthorized");
+    }
+  };
+
   return (
     <div className="h-fit w-full flex justify-between p-4 items-center">
       <div className="flex items-center">
-        <Link to="/" className="text-font font-bold text-4xl mr-8 hover:text-secondary duration-300">amberVR</Link>
+        <Link
+          to={user ? "/home" : "/"}
+          className="text-font font-bold text-4xl mr-8 hover:text-secondary duration-300"
+        >
+          amberVR
+        </Link>
 
         <div className="flex items-center space-x-4">
-          <Link to="/sync" className="flex items-center transition-all duration-300 ease-in-out group hover:text-secondary">
+          <button
+            onClick={handleSyncClick}
+            className="flex items-center transition-all duration-300 ease-in-out group hover:text-secondary"
+          >
             <i className="bi bi-headset-vr text-4xl"></i>
-            <span
-              className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                hoveredIcon === "vr"
-                  ? "ml-2 max-w-xs opacity-100"
-                  : "max-w-0 opacity-0"
-              } text-xl text-font text-secondary whitespace-nowrap`}
-              style={{ transitionProperty: "max-width, opacity, margin-left" }}
-            >
-              Synchronization
-            </span>
-          </Link>
+          </button>
 
-          <Link to="/settings" className="flex items-center transition-all duration-300 ease-in-out group hover:text-secondary">
+          <button
+            onClick={handleSettingsClick}
+            className="flex items-center transition-all duration-300 ease-in-out group hover:text-secondary"
+          >
             <i className="bi bi-gear text-4xl"></i>
-            <span
-              className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                hoveredIcon === "settings"
-                  ? "ml-2 max-w-xs opacity-100"
-                  : "max-w-0 opacity-0"
-              } text-xl text-font text-secondary whitespace-nowrap`}
-              style={{ transitionProperty: "max-width, opacity, margin-left" }}
-            >
-              Settings
-            </span>
-          </Link>
+          </button>
         </div>
       </div>
 

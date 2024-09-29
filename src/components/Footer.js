@@ -7,17 +7,19 @@ function Footer() {
         <Link to="/about" className="text-xl hover:underline duration-300">
           About
         </Link>
-        <Link to="/help" className="text-xl hover:underline duration-300">
-          Help
+        <Link to="/faq" className="text-xl hover:underline duration-300">
+          FAQ
         </Link>
-        <a href="https://hackumbc.tech" target="_blank" className="text-xl hover:underline duration-300">
+        <a
+          href="https://hackumbc.tech"
+          target="_blank"
+          className="text-xl hover:underline duration-300"
+        >
           built for HackUMBC
         </a>
       </div>
 
-      <p className="text-xl">
-        © 2024 AmberVR. All rights reserved.
-      </p>
+      <p className="text-xl">© 2024 AmberVR. All rights reserved.</p>
     </div>
   );
 }
