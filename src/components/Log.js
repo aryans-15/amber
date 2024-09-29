@@ -308,7 +308,7 @@ function Log() {
       <p className="text-font text-6xl mb-12 font-bold">Talk to Amber</p>
 
       <div className="grid grid-cols-2 gap-2">
-        <div className="flex flex-col items-center justify-center  overflow-hidden mr-4">
+        <div className="flex flex-col items-center justify-center overflow-hidden mr-4">
           <video
             autoPlay={true}
             ref={videoRef}
@@ -321,7 +321,11 @@ function Log() {
             height={720}
           ></canvas>
         </div>
-        <div className="rounded-lg flex flex-col justify-center overflow-y-auto ml-4 border-4 border-secondary px-4">
+
+        <div
+          className="rounded-lg flex flex-col justify-start ml-4 border-4 border-secondary px-4"
+          style={{ height: "340px", overflowY: "auto" }}
+        >
           {logs.map(([text, timestamp], index) => (
             <div key={index} className="text-xl my-2 flex flex-col">
               <p className="text-xl">{text}</p>
@@ -332,6 +336,7 @@ function Log() {
           ))}
         </div>
       </div>
+
       <canvas
         ref={visualizerCanvasRef}
         width={640}
