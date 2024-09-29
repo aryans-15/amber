@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
+import { ElevenLabsClient, ElevenLabs } from "elevenlabs";
 
 function Log() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [description, setDescription] = useState('');
   const [logs, setLogs] = useState([]);
+  const elevenLabsClient = new ElevenLabsClient({ apiKey: 'YOUR_ELEVEN_LABS_API_KEY' }); // Set up client
+  const audioRef = useRef(null); // Ref to hold the audio element
 
   const streamCamVideo = () => {
     const constraints = { video: true };
@@ -40,9 +43,25 @@ function Log() {
       setDescription(newDescription);
       const timestamp = new Date().toISOString();
       setLogs((prevLogs) => [...prevLogs, [newDescription, timestamp]]);
-      
+      playDescription(newDescription);
     } catch (error) {
       console.error('Error sending image to API:', error);
+    }
+  };
+
+  const playDescription = async (text) => {
+    try {
+      const audioStream = await elevenLabsClient.textToSpeech({
+        text: text,
+        voice: "Rachel" // You can choose a different voice here
+      });
+      
+      const audioUrl = URL.createObjectURL(audioStream);
+      audioRef.current.src = audioUrl;
+      audioRef.current.play();
+
+    } catch (error) {
+      console.error('Error converting text to speech:', error);
     }
   };
 
