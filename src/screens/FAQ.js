@@ -30,7 +30,7 @@ function FAQ() {
                   How do I use amberAI?
                 </h3>
                 <p class="text-disabled">
-                  Nevigate{" "}
+                  Navigate{" "}
                   <a
                     href="/chat"
                     className="text-secondary transition duration-300 hover:text-hoverc"
