@@ -28,7 +28,7 @@ function Log() {
   const navigate = useNavigate();
   let userVoice = "N2lVS1w4EtoT3dr4eOWO";
   let userLanguage = "en-US";
-  let userSpeed = 1;
+  let userPitch = 1;
 
   const streamCamVideo = () => {
     const constraints = { video: { facingMode: "user" } };
@@ -133,7 +133,7 @@ function Log() {
       if (userDoc.exists()) {
         const userData = userDoc.data();
         userLanguage = userData.language;
-        userSpeed = userData.speed;
+        userPitch = userData.pitch;
         userVoice = userData.voice;
         recognition.lang = userLanguage;
       } else {
@@ -261,7 +261,7 @@ function Log() {
             stability: 0.1,
             similarity_boost: 0.3,
             style: 0.2,
-            speed: userSpeed,
+            speed: parseFloat(userPitch),
           },
         },
       });

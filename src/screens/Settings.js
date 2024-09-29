@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function Settings() {
   const [language, setLanguage] = useState("english");
-  const [speed, setSpeed] = useState("normal");
+  const [pitch, setPitch] = useState("normal");
   const [voice, setVoice] = useState("adam");
   const [userEmail, setUserEmail] = useState(null);
 
@@ -29,8 +29,8 @@ function Settings() {
           if (userData.language) {
             setLanguage(userData.language);
           }
-          if (userData.speed) {
-            setSpeed(userData.speed);
+          if (userData.pitch) {
+            setPitch(userData.pitch);
           }
           if (userData.voice) {
             setVoice(userData.voice);
@@ -53,7 +53,7 @@ function Settings() {
     const userDocRef = doc(db, "users", userEmail);
 
     try {
-      const updatedData = { language, speed, voice };
+      const updatedData = { language, pitch, voice };
       await setDoc(userDocRef, updatedData, { merge: true }).then(() => {
         alert("Settings updated");
       });
@@ -100,15 +100,15 @@ function Settings() {
               </select>
             </div>
             <div className="flex space-x-4 items-center justify-between">
-              <p className="text-white text-2xl">Speed: </p>
+              <p className="text-white text-2xl">Pitch: </p>
               <select
                 className="bg-secondary text-white border-4 border-font text-xl rounded-lg block w-[80%] py-2 px-3 hover:cursor-pointer"
-                value={speed}
-                onChange={(e) => setSpeed(e.target.value)}
+                value={pitch}
+                onChange={(e) => setPitch(e.target.value)}
               >
-                <option value="1">Slow</option>
-                <option value="5">Normal</option>
-                <option value="10">Fast</option>
+                <option value="0.1">Low</option>
+                <option value="1">Normal</option>
+                <option value="2">High</option>
               </select>
             </div>
             <div className="flex space-x-4 items-center justify-between">
