@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import SyncStart from "../components/SyncStart";
-import SyncConnect from "../components/SyncConnect";
 import Log from "../components/Log";
 
 function Sync() {
   const [currentStep, setCurrentStep] = useState(0);
-  // const steps = [<SyncStart onNext={() => setCurrentStep(1)} />, <SyncConnect onNext={() => setCurrentStep(2)} />, <Log />];
   const steps = [<Log />];
 
   return (
     <div className="flex flex-col h-screen bg-primary text-font">
       <Header />
       <div className="flex-grow flex items-center justify-center">
-        <div className="w-[60%] h-[70%] flex flex-col p-8 items-center">
+        <div className="w-[60%] flex flex-col p-8 items-center">
           {steps[currentStep]}
           {currentStep < steps.length - 1 && (
             <button
@@ -24,7 +21,7 @@ function Sync() {
               Next
             </button>
           )}
-          <div className="flex space-x-4">
+          {/* <div className="flex space-x-4">
             {steps.map((_, index) => (
               <div
                 key={index}
@@ -35,7 +32,7 @@ function Sync() {
                 }`}
               ></div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
       <Footer />

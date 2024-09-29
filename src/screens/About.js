@@ -13,7 +13,7 @@ function About() {
           </h2>
           <div class="pt-8 text-left border-t border-gray-700">
             <p class="text-disabled text-2xl mb-4">
-              At amberVR, our mission is to benefit individuals who are blind or
+              At amberAI, our mission is to benefit individuals who are blind or
               visually impaired by providing innovative solutions for safe and
               confident navigation. Through utilizing a VR headset and object
               detection software to deliver real-time narration of obstacles and

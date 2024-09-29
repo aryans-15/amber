@@ -1,11 +1,14 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import requests
 from dotenv import load_dotenv
 from threading import Lock
+from pydub import AudioSegment
+from datetime import datetime
 import os
-from datetime import datetime, timezone
+import requests
 import pytz
+import base64
+import io
 
 app = Flask(__name__)
 CORS(app)
@@ -22,20 +25,21 @@ def describe_image():
     user_id = data.get('user_id')
     if not user_id:
         return jsonify({'error': 'user_id must be provided'}), 400
-    image_url = data.get('image_url')
-    if not image_url:
-        return jsonify({'error': 'No image URL provided'}), 400
+    image_base64 = data.get('image_base64')
+    if not image_base64:
+        return jsonify({'error': 'No image base64 data provided'}), 400
     prompt = data.get('prompt', '')
+    print(prompt)
 
     payload = {
         "model": "gpt-4o-mini",
         "messages": [
-            {"role": "system", "content": "You are a cool image analyst. Your goal is to describe what is in this image. The user is asking you: ' + prompt + ' Limit responses to 1 sentence. "},
+            {"role": "system", "content": f"There is a user asking for your help in analyzing an image. Please answer their question in its entirety, or if it is too confusing, ask them to re-iterate the request. Be semi-formal, but not overly formal. Be confident; even if you are slightly unsure, do not indicate so in your response. Limit responses to 1 sentence."},  # Using f-string for interpolation
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "What is in the image?"},
-                    {"type": "image_url", "image_url": {"url": image_url}}
+                    {"type": "text", "text": f"'{prompt}'"},
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image_base64}"}}
                 ]
             }
         ],
@@ -69,7 +73,6 @@ def query_latest():
         return jsonify({'error': 'user_id must be provided'}), 400
     with lock:
         cache = user_caches.get(user_id, []).copy()
-    # the data should probably already be sorted, but let's do this to be safe
     latest_outputs = sorted(cache, key=lambda x: x[1])
     return jsonify({'latest_outputs': latest_outputs}), 200
 
@@ -79,7 +82,6 @@ def clear_cache():
     user_id = data.get('user_id')
     if not user_id:
         return jsonify({'error': 'user_id must be provided'}), 400
-    
     with lock:
         if user_id in user_caches:
             del user_caches[user_id]

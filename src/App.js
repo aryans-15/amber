@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Splash from "./screens/Splash";
 import Home from "./screens/Home";
-import Sync from "./screens/Sync";
+import Chat from "./screens/Chat";
 import Settings from "./screens/Settings";
 import About from "./screens/About";
 import FAQ from "./screens/FAQ";
@@ -19,7 +19,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/faq" element={<FAQ />} />
-            <Route path="/sync" element={<Sync />} />
+            <Route path="/chat" element={<Chat />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
             <Route path="*" element={<NotFound />} />

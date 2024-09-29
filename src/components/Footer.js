@@ -19,7 +19,7 @@ function Footer() {
         </a>
       </div>
 
-      <p className="text-xl">© 2024 AmberVR. All rights reserved.</p>
+      <p className="text-xl">© 2024 amberAI. All rights reserved.</p>
     </div>
   );
 }

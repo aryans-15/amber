@@ -47,7 +47,7 @@ function Header() {
           to={user ? "/home" : "/"}
           className="text-font font-bold text-4xl mr-8 hover:text-secondary duration-300"
         >
-          amberVR
+          amberAI
         </Link>
 
         <div className="flex items-center space-x-4">

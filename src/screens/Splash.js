@@ -21,8 +21,8 @@ function Home() {
             <img src={vrImage} alt="VR Visual" className="h-full w-full max-h-[40vh] max-w-[40vw] object-contain"/>
           </div>
           <div className="p-8 rounded-lg flex flex-col justify-center">
-            <h2 className="text-6xl font-bold mb-2">AmberVR</h2>
-            <h2 className="text-2xl font-bold mb-20">Helping the blind see.</h2>
+            <h2 className="text-6xl font-bold mb-2">amberAI</h2>
+            <h2 className="text-2xl font-bold mb-20">Narrating your world.</h2>
             <h2 className="text-xl mb-2">100% free to use. Sign up today.</h2>
             <button className="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-hoverc transition duration-300 mb-2" onClick={handleUserLogin}>
                 <i class="bi bi-google"></i>&nbsp;&nbsp;Log in with Google
