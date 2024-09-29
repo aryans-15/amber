@@ -39,4 +39,4 @@ const Sync = () => {
   );
 };
 
-export default Sync;
+export default SyncStart;
